@@ -52,13 +52,14 @@ describe('첫 노출', () => {
 });
 
 describe('영화 검색', () => {
-  const searchMovie = async () => {
-    const MOCK_MOVIE_TITLE = '해리포터';
+  const MOCK_MOVIE_TITLE = '해리포터';
+  const MOCK_LIST = [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }];
 
+  const searchMovie = async () => {
     server.use(
       http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {
         return HttpResponse.json({
-          results: [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }],
+          results: MOCK_LIST,
           total_results: 100,
         });
       })
@@ -95,13 +96,12 @@ describe('영화 검색', () => {
 
   it('검색어를 입력 후 검색버튼을 누르면 영화가 검색된다.', async () => {
     const mockHandler = vi.fn();
-    const MOCK_MOVIE_TITLE = '해리포터';
 
     server.use(
       http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {
         mockHandler();
         return HttpResponse.json({
-          results: [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }],
+          results: MOCK_LIST,
         });
       })
     );
@@ -129,5 +129,10 @@ describe('영화 검색', () => {
     );
     // 핸들러가 호출되었는지 확인
     expect(searchResultTotalCount).toHaveTextContent('검색 결과 100');
+  });
+
+  it('영화가 검색되면 검색된 영화 목록이 노출된다.', async () => {
+    await searchMovie();
+    expect(screen.getAllByRole('listitem')).toHaveLength(MOCK_LIST.length);
   });
 });
