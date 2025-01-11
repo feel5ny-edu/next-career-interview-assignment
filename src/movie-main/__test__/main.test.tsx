@@ -52,6 +52,29 @@ describe('첫 노출', () => {
 });
 
 describe('영화 검색', () => {
+  const searchMovie = async () => {
+    const MOCK_MOVIE_TITLE = '해리포터';
+
+    server.use(
+      http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {
+        return HttpResponse.json({
+          results: [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }],
+        });
+      })
+    );
+
+    // GIVEN
+    renderMain();
+
+    // WHEN
+    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId('search-button');
+    fireEvent.change(searchInput, { target: { value: MOCK_MOVIE_TITLE } });
+    fireEvent.click(searchButton);
+
+    await waitFor(() => screen.getByText(MOCK_MOVIE_TITLE));
+  };
+
   it('검색어를 한글자 이상 입력해야, 검색버튼이 활성화된다.', () => {
     // GIVEN
     renderMain();
@@ -95,5 +118,15 @@ describe('영화 검색', () => {
 
     // 핸들러가 호출되었는지 확인
     expect(mockHandler).toHaveBeenCalled();
+  });
+
+  it('영화가 검색되면 검색된 영화의 갯수가 노출된다.', async () => {
+    searchMovie();
+
+    const searchResultTotalCount = screen.getByTestId(
+      'search-result-total-count'
+    );
+    // 핸들러가 호출되었는지 확인
+    expect(searchResultTotalCount).toHaveTextContent('3');
   });
 });
