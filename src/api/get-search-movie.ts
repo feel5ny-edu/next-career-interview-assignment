@@ -20,7 +20,7 @@ const getSearchMovie = async (params: RequestGetSearchMovie) => {
   return data;
 };
 
-export const useGetSearchMovie = (
+export const useSearchMovie = (
   params: RequestGetSearchMovie,
   options?: Partial<UseQueryOptions<ResponseGetSearchMovie, null>>
 ) => {
