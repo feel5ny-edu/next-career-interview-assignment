@@ -27,18 +27,23 @@ describe('첫 노출', () => {
     expect(screen.getByTestId('search-section')).toBeInTheDocument();
   });
 
-  it('메인페이지 진입시, 현재 상영 중인 영화 목록을 확인할 수 있다.', () => {
+  it('메인페이지 진입시, 현재 상영 중인 영화 목록을 확인할 수 있다.', async () => {
+    const MOCK_MOVIE_TITLE = '라이온킹';
+
     // GIVEN, WHEN
     renderMain();
     server.use(
       http.get(getUrl(GET_LIST_NOW_PLAYING_MOVIE_PATH), async () => {
-        return HttpResponse.json([{ id: 1 }, { id: 2 }, { id: 3 }]);
+        return HttpResponse.json({
+          results: [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }],
+        });
       })
     );
+    await waitFor(() => screen.getByText(MOCK_MOVIE_TITLE));
 
     // THEN
     expect(screen.getByTestId('now-playing-section')).toBeInTheDocument();
-    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByTestId('now-playing-title')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       '현재 상영중인 영화'

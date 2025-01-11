@@ -9,9 +9,11 @@ type RequestGetListNowPlayingMovie = {
   page: number;
 };
 
-type ResponseGetListNowPlayingMovie = {
-  id: number;
-  title: string;
+export type ResponseGetListNowPlayingMovie = {
+  results: {
+    id: number;
+    title: string;
+  }[];
 };
 
 export const GET_LIST_NOW_PLAYING_MOVIE_PATH = '/3/movie/now_playing';
@@ -27,8 +29,8 @@ const getListNowPlayingMovie = async (
 
 export const useGetListNowPlayingMovie = (
   params: RequestGetListNowPlayingMovie,
-  options?: Partial<UseQueryOptions<ResponseGetListNowPlayingMovie[], null>>
-): UseQueryResult<ResponseGetListNowPlayingMovie[], null> => {
+  options?: Partial<UseQueryOptions<ResponseGetListNowPlayingMovie, null>>
+): UseQueryResult<ResponseGetListNowPlayingMovie, null> => {
   return useQuery({
     queryKey: ['get-list-now-playing-movie', params],
     queryFn: () => getListNowPlayingMovie(params),
