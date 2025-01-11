@@ -27,10 +27,10 @@ export const renderMain = () => {
   });
 };
 
-export const renderDetail = () => {
+export const renderDetail = (id: string) => {
   return render(<App />, {
     wrapper: ({ children }) => (
-      <Wrapper initialEntry="/movie/:id">
+      <Wrapper initialEntry={`/movie/${id}`}>
         {children}
         <LocationDisplay />
       </Wrapper>

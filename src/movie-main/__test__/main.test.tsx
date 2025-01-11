@@ -23,6 +23,7 @@ const renderMainWithAsync = async () => {
 
 const MOCK_MOVIE_TITLE = '해리포터';
 const MOCK_LIST = [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }];
+
 const searchMovie = async () => {
   server.use(
     http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {

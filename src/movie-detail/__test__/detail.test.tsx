@@ -5,19 +5,18 @@ import { getUrl } from '../../mocks/handlers';
 import { screen, waitFor } from '@testing-library/react';
 import { GET_MOVIE_PATH } from '../../api/get-movie';
 
-const MOVIE_ID = 123;
+const MOVIE_ID = '123';
 const renderDetailWithAsync = async () => {
   renderDetail(MOVIE_ID);
   const MOCK_MOVIE_TITLE = '라이온킹';
 
   server.use(
-    http.get(getUrl(GET_MOVIE_PATH(1)), async () => {
+    http.get(getUrl(GET_MOVIE_PATH(MOVIE_ID)), async () => {
       return HttpResponse.json({
         id: MOVIE_ID,
         title: MOCK_MOVIE_TITLE,
-        vote_average: 5,
-        poster_path:
-          'https://image.tmdb.org/t/p/w500/jF6ceQFwbGmFxJWgmG7IBYvyb1B.jpg',
+        vote_count: 5,
+        poster_path: '/jF6ceQFwbGmFxJWgmG7IBYvyb1B.jpg',
       });
     })
   );
