@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { ResponseGetSearchMovie } from '../../api/get-search-movie';
 
 export const MovieSearchResultList = ({
@@ -5,6 +6,8 @@ export const MovieSearchResultList = ({
 }: {
   movieList?: ResponseGetSearchMovie;
 }) => {
+  const navigate = useNavigate();
+
   if (!movieList) return null;
   //   if (!movieList.results.length) return <>결과가 없습니다.</>;
   return (
@@ -15,7 +18,13 @@ export const MovieSearchResultList = ({
       <ul>
         {movieList.results.map((item) => {
           return (
-            <li role="listitem" key={item.id}>
+            <li
+              role="listitem"
+              key={item.id}
+              onClick={() => {
+                navigate(`/movie/${item.id}`);
+              }}
+            >
               {item.title}
             </li>
           );

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { ResponseGetListNowPlayingMovie } from '../../api/get-list-now-playing-movie';
 
 export const NowPlayingMovieList = ({
@@ -5,6 +6,8 @@ export const NowPlayingMovieList = ({
 }: {
   movieList?: ResponseGetListNowPlayingMovie;
 }) => {
+  const navigate = useNavigate();
+
   if (!movieList) return null;
   return (
     <section data-testid="now-playing-section">
@@ -12,7 +15,13 @@ export const NowPlayingMovieList = ({
       <ul>
         {movieList.results.map((item) => {
           return (
-            <li role="listitem" key={item.id}>
+            <li
+              role="listitem"
+              key={item.id}
+              onClick={() => {
+                navigate(`/movie/${item.id}`);
+              }}
+            >
               {item.title}
             </li>
           );
