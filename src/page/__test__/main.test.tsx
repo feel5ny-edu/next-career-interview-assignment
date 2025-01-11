@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { renderMain } from '../../test/wrapper';
 import { server } from '../../mocks/server';
 import { http, HttpResponse } from 'msw';
@@ -40,5 +40,24 @@ describe('첫 노출', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       '현재 상영중인 영화'
     );
+  });
+});
+
+describe('영화 검색', () => {
+  it('검색어를 한글자 이상 입력해야, 검색버튼이 활성화된다.', () => {
+    // GIVEN
+    renderMain();
+
+    // WHEN
+    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId('search-button');
+    // 검색어 입력 전: 버튼 비활성화 상태 확인
+    expect(searchButton).toBeDisabled();
+
+    // 한 글자 입력
+    fireEvent.change(searchInput, { target: { value: 'a' } });
+
+    // 입력 후: 버튼 활성화 확인
+    expect(searchButton).toBeEnabled();
   });
 });
