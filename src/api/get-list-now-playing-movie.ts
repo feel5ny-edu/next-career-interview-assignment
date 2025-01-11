@@ -7,10 +7,14 @@ type RequestGetListNowPlayingMovie = {
 
 type ResponseGetListNowPlayingMovie = {};
 
+export const GET_LIST_NOW_PLAYING_MOVIE_PATH = '/3/movie/now_playing';
+
 const getListNowPlayingMovie = async (
   params: RequestGetListNowPlayingMovie
 ) => {
-  const { data } = await axiosInstance.get('/3/movie/now_playing', { params });
+  const { data } = await axiosInstance.get(GET_LIST_NOW_PLAYING_MOVIE_PATH, {
+    params,
+  });
   return data;
 };
 
