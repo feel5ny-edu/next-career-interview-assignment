@@ -5,23 +5,32 @@ export const MovieSearchSection = ({
 }: {
   setSearchKeyword: (inputData: string) => void;
 }) => {
-  const inputData = useRef('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isDisabledButton, setIsDisabledButton] = useState(true);
 
   const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
-    inputData.current = e.target.value;
-    if (e.target.value) setIsDisabledButton(false);
-    else setIsDisabledButton(true);
+    setIsDisabledButton(!Boolean(e.target.value));
   };
 
   const handleSearchButton = () => {
-    setSearchKeyword(inputData.current);
+    if (!inputRef.current) return;
+
+    setSearchKeyword(inputRef.current.value);
+  };
+
+  const handleInitSearch = () => {
+    if (!inputRef.current) return;
+
+    inputRef.current.value = '';
+    setIsDisabledButton(true);
+    setSearchKeyword('');
   };
 
   return (
     <section data-testid="search-section">
       <h1 data-testid="search-title">영화 List</h1>
       <input
+        ref={inputRef}
         data-testid="search-input"
         placeholder="영화를 검색해주세요"
         onChange={handleSearchInput}
@@ -33,7 +42,9 @@ export const MovieSearchSection = ({
       >
         검색
       </button>
-      <button data-testid="init-search-button">검색 초기화</button>
+      <button data-testid="init-search-button" onClick={handleInitSearch}>
+        검색 초기화
+      </button>
     </section>
   );
 };
