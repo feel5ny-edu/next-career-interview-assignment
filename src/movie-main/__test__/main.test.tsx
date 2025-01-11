@@ -135,4 +135,11 @@ describe('영화 검색', () => {
     await searchMovie();
     expect(screen.getAllByRole('listitem')).toHaveLength(MOCK_LIST.length);
   });
+
+  it('영화가 검색되면 "검색 초기화"버튼이 노출된다.', async () => {
+    await searchMovie();
+
+    const initSearchButton = screen.getByTestId('init-search-button');
+    expect(initSearchButton).toBeInTheDocument();
+  });
 });
