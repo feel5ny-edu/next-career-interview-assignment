@@ -11,6 +11,7 @@ export type ResponseGetSearchMovie = {
     id: number;
     title: string;
   }[];
+  total_results: number;
 };
 
 export const GET_SEARCH_MOVIE_PATH = '/3/search/movie';

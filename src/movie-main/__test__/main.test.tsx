@@ -59,6 +59,7 @@ describe('영화 검색', () => {
       http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {
         return HttpResponse.json({
           results: [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }],
+          total_results: 100,
         });
       })
     );
@@ -121,12 +122,12 @@ describe('영화 검색', () => {
   });
 
   it('영화가 검색되면 검색된 영화의 갯수가 노출된다.', async () => {
-    searchMovie();
+    await searchMovie();
 
     const searchResultTotalCount = screen.getByTestId(
       'search-result-total-count'
     );
     // 핸들러가 호출되었는지 확인
-    expect(searchResultTotalCount).toHaveTextContent('3');
+    expect(searchResultTotalCount).toHaveTextContent('검색 결과 100');
   });
 });

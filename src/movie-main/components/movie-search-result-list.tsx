@@ -9,7 +9,9 @@ export const MovieSearchResultList = ({
   //   if (!movieList.results.length) return <>결과가 없습니다.</>;
   return (
     <section data-testid="movie-search-result">
-      <h2 data-testid="">검색 결과 {movieList.results.length}</h2>
+      <h2 data-testid="search-result-total-count">
+        검색 결과 {movieList.total_results}
+      </h2>
       <ul>
         {movieList.results.map((item) => {
           return (
