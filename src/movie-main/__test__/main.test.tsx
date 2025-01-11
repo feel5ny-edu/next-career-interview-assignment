@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { renderMain } from '../../test/wrapper';
+import { renderMain } from '../../utils/test-setup/wrapper';
 import { server } from '../../mocks/server';
 import { http, HttpResponse } from 'msw';
 import { GET_LIST_NOW_PLAYING_MOVIE_PATH } from '../../api/get-list-now-playing-movie';

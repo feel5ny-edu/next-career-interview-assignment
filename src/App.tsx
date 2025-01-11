@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import { MovieMain } from './page/main';
-import { MovieDetail } from './page/detail';
+import { MovieMain } from './movie-main/page';
+import { MovieDetail } from './movie-detail/page';
 
 function App() {
   return (
