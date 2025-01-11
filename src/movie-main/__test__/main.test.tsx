@@ -142,4 +142,19 @@ describe('영화 검색', () => {
     const initSearchButton = screen.getByTestId('init-search-button');
     expect(initSearchButton).toBeInTheDocument();
   });
+
+  it('검색 초기화버튼을 누르면 상영 중인 영화목록이 노출된다.', async () => {
+    // Given
+    await searchMovie();
+
+    // When
+    const initSearchButton = screen.getByTestId('init-search-button');
+    fireEvent.click(initSearchButton);
+
+    expect(screen.getByTestId('now-playing-section')).toBeInTheDocument();
+    expect(screen.getByTestId('now-playing-title')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      '현재 상영중인 영화'
+    );
+  });
 });
