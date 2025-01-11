@@ -34,7 +34,8 @@ describe('첫 노출', () => {
     );
 
     // THEN
-    expect(screen.getAllByRole('listItem')).toHaveLength(3);
+    expect(screen.getByTestId('now-playing-section')).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
     expect(screen.getByTestId('now-playing-title')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       '현재 상영중인 영화'
