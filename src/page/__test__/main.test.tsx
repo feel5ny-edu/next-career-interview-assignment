@@ -1,8 +1,11 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderMain } from '../../test/wrapper';
 import { server } from '../../mocks/server';
 import { http, HttpResponse } from 'msw';
 import { GET_LIST_NOW_PLAYING_MOVIE_PATH } from '../../api/get-list-now-playing-movie';
+import { vi } from 'vitest';
+import { GET_SEARCH_MOVIE_PATH } from '../../api/get-search-movie';
+import { getUrl } from '../../mocks/handlers';
 
 describe('첫 노출', () => {
   it('메인페이지 진입시, 검색 섹션이 노출되어있다.', () => {
@@ -28,7 +31,7 @@ describe('첫 노출', () => {
     // GIVEN, WHEN
     renderMain();
     server.use(
-      http.post(GET_LIST_NOW_PLAYING_MOVIE_PATH, async () => {
+      http.get(getUrl(GET_LIST_NOW_PLAYING_MOVIE_PATH), async () => {
         return HttpResponse.json([{ id: 1 }, { id: 2 }, { id: 3 }]);
       })
     );
@@ -59,5 +62,35 @@ describe('영화 검색', () => {
 
     // 입력 후: 버튼 활성화 확인
     expect(searchButton).toBeEnabled();
+  });
+
+  it('검색어를 입력 후 검색버튼을 누르면 영화가 검색된다.', async () => {
+    const mockHandler = vi.fn();
+    const MOCK_MOVIE_TITLE = '해리포터';
+
+    server.use(
+      http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {
+        mockHandler();
+        return HttpResponse.json({
+          results: [{ id: 1, title: MOCK_MOVIE_TITLE }, { id: 2 }, { id: 3 }],
+        });
+      })
+    );
+
+    // GIVEN
+    renderMain();
+
+    // WHEN
+    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId('search-button');
+
+    // 한 글자 입력
+    fireEvent.change(searchInput, { target: { value: MOCK_MOVIE_TITLE } });
+    fireEvent.click(searchButton);
+
+    await waitFor(() => screen.getByText(MOCK_MOVIE_TITLE));
+
+    // 핸들러가 호출되었는지 확인
+    expect(mockHandler).toHaveBeenCalled();
   });
 });
