@@ -6,7 +6,7 @@ type RequestGetSearchMovie = {
   page: number;
 };
 
-type ResponseGetSearchMovie = {
+export type ResponseGetSearchMovie = {
   results: {
     id: number;
     title: string;
