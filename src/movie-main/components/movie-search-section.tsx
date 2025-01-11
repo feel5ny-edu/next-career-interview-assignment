@@ -33,6 +33,7 @@ export const MovieSearchSection = ({
       >
         검색
       </button>
+      <button data-testid="init-search-button">검색 초기화</button>
     </section>
   );
 };
