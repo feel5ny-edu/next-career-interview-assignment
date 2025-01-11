@@ -83,8 +83,6 @@ describe('영화 검색', () => {
     // WHEN
     const searchInput = screen.getByTestId('search-input');
     const searchButton = screen.getByTestId('search-button');
-
-    // 한 글자 입력
     fireEvent.change(searchInput, { target: { value: MOCK_MOVIE_TITLE } });
     fireEvent.click(searchButton);
 
