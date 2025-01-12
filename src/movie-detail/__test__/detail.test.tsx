@@ -51,13 +51,13 @@ describe('한줄 평 작성', () => {
     expect(movieCommentInput).toBeInTheDocument();
     expect(movieCommentSubmitButton).toBeInTheDocument();
   });
-  it('한줄평을 작성한 후 제출버튼을 누르면 input이 비노출된다.', async () => {
+
+  const submitComment = async () => {
     // GIVEN
     await renderDetailWithAsync();
     const movieCommentButton = screen.getByTestId('movie-comment-button');
     fireEvent.click(movieCommentButton);
 
-    const movieCommentForm = screen.getByTestId('movie-comment-form');
     const movieCommentInput = screen.getByTestId('movie-comment-input');
     const movieCommentSubmitButton = screen.getByTestId(
       'movie-comment-submit-button'
@@ -66,7 +66,18 @@ describe('한줄 평 작성', () => {
     // WHEN
     fireEvent.change(movieCommentInput, { target: { value: 'test' } });
     fireEvent.click(movieCommentSubmitButton);
+  };
 
+  it('한줄평을 작성한 후 제출버튼을 누르면 input이 비노출된다.', async () => {
+    await submitComment();
+
+    const movieCommentForm = screen.queryByTestId('movie-comment-form');
     expect(movieCommentForm).not.toBeInTheDocument();
+  });
+  it('한줄평을 작성한 후 제출버튼을 누르면 작성한 한줄평이 노출된다.', async () => {
+    await submitComment();
+
+    const movieCommentForm = screen.queryByTestId('movie-comment-item');
+    expect(movieCommentForm).toBeInTheDocument();
   });
 });
