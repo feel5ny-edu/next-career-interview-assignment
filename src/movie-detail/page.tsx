@@ -1,12 +1,17 @@
 import { useParams } from 'react-router-dom';
 import { useGetMovie } from '../api/get-movie';
+import { useState } from 'react';
 
 export const MovieDetail = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetMovie({ id: Number(id) });
-
   // TODO
-  const COMMENT = '';
+  const COMMENT = 'test';
+  const { data, isLoading } = useGetMovie({ id: Number(id) });
+  const [showCommentInput, setShowCommentInput] = useState(Boolean(COMMENT));
+
+  const handleToggle = () => {
+    setShowCommentInput(!showCommentInput);
+  };
 
   if (isLoading) return <>Loading..</>;
   if (!data) return null;
@@ -24,7 +29,20 @@ export const MovieDetail = () => {
       <div data-testid="movie-vote" className="text-xl py-4">
         평점 {data.vote_average}
       </div>
-      <div data-testid="movie-comment">{COMMENT}</div>
+      <div data-testid="movie-comment">
+        {COMMENT}
+        {!COMMENT && !showCommentInput && (
+          <button data-testid="movie-comment-button" onClick={handleToggle}>
+            한줄평 작성하기 +
+          </button>
+        )}
+        {!COMMENT && showCommentInput && (
+          <div className="flex">
+            <input data-testid="movie-comment-input" />
+            <button data-testid="movie-comment-submit-button">제출</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
