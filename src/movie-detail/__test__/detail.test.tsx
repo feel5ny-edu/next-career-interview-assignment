@@ -80,4 +80,16 @@ describe('한줄 평 작성', () => {
     const movieCommentForm = screen.queryByTestId('movie-comment-item');
     expect(movieCommentForm).toBeInTheDocument();
   });
+  it('한줄평을 작성한 후 제출버튼을 누르면 로컬스토리지에 데이터가 저장된다.', async () => {
+    await submitComment();
+
+    const storedData = JSON.parse(
+      localStorage.getItem('movie-comment') || '{}'
+    );
+
+    /**
+     * { [movie-id]: string }
+     */
+    expect(storedData).toEqual({ 1: '재미있네요' });
+  });
 });
