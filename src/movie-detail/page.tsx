@@ -34,7 +34,7 @@ export const MovieDetail = () => {
         평점 {data.vote_average}
       </div>
       <div data-testid="movie-comment">
-        {COMMENT}
+        <div data-testid="movie-comment-item">{COMMENT}</div>
         {!COMMENT && !showCommentInput && (
           <button data-testid="movie-comment-button" onClick={handleToggle}>
             한줄평 작성하기 +
