@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { server } from '../../mocks/server';
 import { renderDetail } from '../../utils/test-setup/wrapper';
 import { getUrl } from '../../mocks/handlers';
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { GET_MOVIE_PATH } from '../../api/get-movie';
 
 const MOVIE_ID = '123';
@@ -35,5 +35,20 @@ describe('첫 노출', () => {
     expect(moviePoster).toBeInTheDocument();
     expect(movieVote).toBeInTheDocument();
     expect(movieComment).toBeInTheDocument();
+  });
+});
+
+describe('한줄 평 작성', () => {
+  it('"한줄평 작성하기"버튼을 누르면 Input과 제출버튼이 노출된다.', async () => {
+    await renderDetailWithAsync();
+    const movieCommentButton = screen.getByTestId('movie-comment-button');
+    fireEvent.click(movieCommentButton);
+
+    const movieCommentInput = screen.getByTestId('movie-comment-input');
+    const movieCommentSubmitButton = screen.getByTestId(
+      'movie-comment-submit-button'
+    );
+    expect(movieCommentInput).toBeInTheDocument();
+    expect(movieCommentSubmitButton).toBeInTheDocument();
   });
 });
