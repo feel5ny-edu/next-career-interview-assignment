@@ -1,13 +1,20 @@
 import { useParams } from 'react-router-dom';
 import { useGetMovie } from '../api/get-movie';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+
+const storageKey = 'movie-comment';
 
 export const MovieDetail = () => {
   const { id } = useParams();
-  // TODO
-  const COMMENT = '';
+  if (!id) throw new Error('required parameter');
+
+  const commentRef = useRef<HTMLInputElement>(
+    JSON.parse(localStorage.getItem(storageKey) || '{}')[id] || null
+  );
   const { data, isLoading } = useGetMovie({ id: Number(id) });
-  const [showCommentInput, setShowCommentInput] = useState(Boolean(COMMENT));
+  const [showCommentInput, setShowCommentInput] = useState(
+    Boolean(commentRef.current?.value)
+  );
 
   const handleToggle = () => {
     setShowCommentInput(!showCommentInput);
@@ -15,6 +22,10 @@ export const MovieDetail = () => {
 
   const handleSubmitComment = () => {
     handleToggle();
+
+    const prevData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    const newData = { ...prevData, [id]: commentRef.current?.value };
+    localStorage.setItem(storageKey, JSON.stringify(newData));
   };
 
   if (isLoading) return <>Loading..</>;
@@ -34,15 +45,15 @@ export const MovieDetail = () => {
         평점 {data.vote_average}
       </div>
       <div data-testid="movie-comment">
-        <div data-testid="movie-comment-item">{COMMENT}</div>
-        {!COMMENT && !showCommentInput && (
+        <div data-testid="movie-comment-item">{commentRef.current?.value}</div>
+        {!commentRef.current?.value && !showCommentInput && (
           <button data-testid="movie-comment-button" onClick={handleToggle}>
             한줄평 작성하기 +
           </button>
         )}
-        {!COMMENT && showCommentInput && (
+        {!commentRef.current?.value && showCommentInput && (
           <div className="flex" data-testid="movie-comment-form">
-            <input data-testid="movie-comment-input" />
+            <input data-testid="movie-comment-input" ref={commentRef} />
             <button
               data-testid="movie-comment-submit-button"
               onClick={handleSubmitComment}

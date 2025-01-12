@@ -52,6 +52,7 @@ describe('한줄 평 작성', () => {
     expect(movieCommentSubmitButton).toBeInTheDocument();
   });
 
+  const MOCK_COMMENT = '재미있네요!';
   const submitComment = async () => {
     // GIVEN
     await renderDetailWithAsync();
@@ -64,7 +65,7 @@ describe('한줄 평 작성', () => {
     );
 
     // WHEN
-    fireEvent.change(movieCommentInput, { target: { value: 'test' } });
+    fireEvent.change(movieCommentInput, { target: { value: MOCK_COMMENT } });
     fireEvent.click(movieCommentSubmitButton);
   };
 
@@ -90,6 +91,6 @@ describe('한줄 평 작성', () => {
     /**
      * { [movie-id]: string }
      */
-    expect(storedData).toEqual({ 1: '재미있네요' });
+    expect(storedData).toEqual({ 123: MOCK_COMMENT });
   });
 });
