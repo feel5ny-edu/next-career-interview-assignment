@@ -140,10 +140,30 @@ describe('영화 검색', () => {
   });
 
   it('영화가 검색되면 "검색 초기화"버튼이 노출된다.', async () => {
-    await searchMovie();
+    server.use(
+      http.get(getUrl(GET_SEARCH_MOVIE_PATH), async () => {
+        return HttpResponse.json({
+          results: MOCK_LIST,
+          total_results: 100,
+        });
+      })
+    );
 
-    const initSearchButton = screen.getByTestId('init-search-button');
-    expect(initSearchButton).toBeInTheDocument();
+    // GIVEN
+    renderMainWithAsync();
+    // WHEN
+    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId('search-button');
+    const initSearchButton = screen.queryByText(/검색\s*초기화/i);
+
+    expect(initSearchButton).not.toBeInTheDocument();
+
+    fireEvent.change(searchInput, { target: { value: MOCK_MOVIE_TITLE } });
+    fireEvent.click(searchButton);
+
+    await waitFor(() => screen.getByText(MOCK_MOVIE_TITLE));
+
+    expect(screen.queryByText(/검색\s*초기화/i)).toBeInTheDocument();
   });
 
   it('검색 초기화버튼을 누르면 상영 중인 영화목록이 노출된다.', async () => {

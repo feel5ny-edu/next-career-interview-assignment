@@ -32,7 +32,10 @@ export const MovieMain = () => {
 
   return (
     <>
-      <MovieSearchSection setSearchKeyword={setSearchKeyword} />
+      <MovieSearchSection
+        searchKeyword={searchKeyword}
+        setSearchKeyword={setSearchKeyword}
+      />
 
       <MovieListSection
         isLoading={isLoadingSearchMovieList || isLoadingGetListNowPlayingMovie}

@@ -1,8 +1,10 @@
 import { ChangeEvent, useRef, useState } from 'react';
 
 export const MovieSearchSection = ({
+  searchKeyword,
   setSearchKeyword,
 }: {
+  searchKeyword: string;
   setSearchKeyword: (inputData: string) => void;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -48,13 +50,15 @@ export const MovieSearchSection = ({
           검색
         </button>
       </div>
-      <button
-        className="rounded-lg px-4 py-2 my-4 border-slate-600 border-2"
-        data-testid="init-search-button"
-        onClick={handleInitSearch}
-      >
-        검색 초기화
-      </button>
+      {searchKeyword && (
+        <button
+          className="rounded-lg px-4 py-2 my-4 border-slate-600 border-2"
+          data-testid="init-search-button"
+          onClick={handleInitSearch}
+        >
+          검색 초기화
+        </button>
+      )}
     </section>
   );
 };
