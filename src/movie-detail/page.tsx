@@ -5,12 +5,16 @@ import { useState } from 'react';
 export const MovieDetail = () => {
   const { id } = useParams();
   // TODO
-  const COMMENT = 'test';
+  const COMMENT = '';
   const { data, isLoading } = useGetMovie({ id: Number(id) });
   const [showCommentInput, setShowCommentInput] = useState(Boolean(COMMENT));
 
   const handleToggle = () => {
     setShowCommentInput(!showCommentInput);
+  };
+
+  const handleSubmitComment = () => {
+    handleToggle();
   };
 
   if (isLoading) return <>Loading..</>;
@@ -37,9 +41,14 @@ export const MovieDetail = () => {
           </button>
         )}
         {!COMMENT && showCommentInput && (
-          <div className="flex">
+          <div className="flex" data-testid="movie-comment-form">
             <input data-testid="movie-comment-input" />
-            <button data-testid="movie-comment-submit-button">제출</button>
+            <button
+              data-testid="movie-comment-submit-button"
+              onClick={handleSubmitComment}
+            >
+              제출
+            </button>
           </div>
         )}
       </div>
