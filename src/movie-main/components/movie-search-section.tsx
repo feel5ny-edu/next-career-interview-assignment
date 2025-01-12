@@ -33,7 +33,7 @@ export const MovieSearchSection = ({
       <h1 data-testid="search-title" className="text-4xl font-bold py-8">
         영화 List
       </h1>
-      <div className="flex">
+      <div className="flex mb-4">
         <input
           ref={inputRef}
           data-testid="search-input"
@@ -45,19 +45,21 @@ export const MovieSearchSection = ({
           data-testid="search-button"
           disabled={isDisabledButton}
           onClick={handleSearchButton}
-          className="min-w-28 ml-2 rounded-lg px-8 py-4 bg-slate-600 text-white"
+          className="min-w-28 ml-2 rounded-lg px-8 py-4 bg-slate-600 disabled:bg-slate-400 text-white"
         >
           검색
         </button>
       </div>
       {searchKeyword && (
-        <button
-          className="rounded-lg px-4 py-2 my-4 border-slate-600 border-2"
-          data-testid="init-search-button"
-          onClick={handleInitSearch}
-        >
-          검색 초기화
-        </button>
+        <div className="flex justify-end">
+          <button
+            className="rounded-lg px-4 py-2 mb-4 border-slate-600 border-2"
+            data-testid="init-search-button"
+            onClick={handleInitSearch}
+          >
+            검색 초기화
+          </button>
+        </div>
       )}
     </section>
   );
