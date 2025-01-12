@@ -4,16 +4,14 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { axiosInstance } from './common';
+import { Movie } from './types/movie';
 
 type RequestGetListNowPlayingMovie = {
   page: number;
 };
 
 export type ResponseGetListNowPlayingMovie = {
-  results: {
-    id: number;
-    title: string;
-  }[];
+  results: Movie[];
 };
 
 export const GET_LIST_NOW_PLAYING_MOVIE_PATH = '/3/movie/now_playing';

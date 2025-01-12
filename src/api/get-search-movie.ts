@@ -1,5 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { axiosInstance } from './common';
+import { Movie } from './types/movie';
 
 type RequestGetSearchMovie = {
   query: string;
@@ -7,10 +8,7 @@ type RequestGetSearchMovie = {
 };
 
 export type ResponseGetSearchMovie = {
-  results: {
-    id: number;
-    title: string;
-  }[];
+  results: Movie[];
   total_results: number;
 };
 
