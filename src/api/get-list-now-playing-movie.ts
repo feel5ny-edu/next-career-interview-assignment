@@ -1,18 +1,18 @@
 import {
+  InfiniteData,
+  useInfiniteQuery,
   useQuery,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
 import { axiosInstance } from './common';
-import { Movie } from './types/movie';
+import { MoviePagination } from './types/movie';
 
 type RequestGetListNowPlayingMovie = {
   page: number;
 };
 
-export type ResponseGetListNowPlayingMovie = {
-  results: Movie[];
-};
+export type ResponseGetListNowPlayingMovie = MoviePagination;
 
 export const GET_LIST_NOW_PLAYING_MOVIE_PATH = '/3/movie/now_playing';
 
@@ -33,5 +33,27 @@ export const useGetListNowPlayingMovie = (
     queryKey: ['get-list-now-playing-movie', params],
     queryFn: () => getListNowPlayingMovie(params),
     ...options,
+  });
+};
+
+const PAGE_SIZE = 20;
+export const useGetListNowPlayingMovieInfinite = () => {
+  return useInfiniteQuery<
+    ResponseGetListNowPlayingMovie,
+    Error,
+    InfiniteData<ResponseGetListNowPlayingMovie>,
+    string[],
+    number
+  >({
+    queryKey: ['get-search-movie-infinite'],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      getListNowPlayingMovie({ page: pageParam }),
+    getNextPageParam: (lastPage, pages) => {
+      const { total_results, page } = pages[pages.length - 1];
+      if (total_results === 0) return null;
+      if (page * PAGE_SIZE > total_results) return null;
+      return page + 1;
+    },
+    initialPageParam: 1,
   });
 };

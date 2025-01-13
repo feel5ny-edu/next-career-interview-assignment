@@ -19,3 +19,9 @@ export type Movie = {
   vote_average: number;
   vote_count: number;
 };
+
+export type MoviePagination = {
+  page: number;
+  results: Movie[];
+  total_results: number;
+};

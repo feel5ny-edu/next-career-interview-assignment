@@ -18,12 +18,14 @@ export const MovieSearchSection = ({
   const handleSearchButton = () => {
     if (!inputRef.current) return;
 
+    window.scroll(0, 0);
     setSearchKeyword(inputRef.current.value);
   };
 
   const handleInitSearch = () => {
     if (!inputRef.current) return;
 
+    window.scroll(0, 0);
     inputRef.current.value = '';
     setIsDisabledButton(true);
     setSearchKeyword('');

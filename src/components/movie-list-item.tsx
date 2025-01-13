@@ -1,23 +1,25 @@
-import { Movie } from '../api/types/movie';
+import { MoviePagination } from '../api/types/movie';
 
 export const MovieList = ({
   onRoute,
   movieList,
 }: {
   onRoute: (path: string) => void;
-  movieList: Movie[];
+  movieList: MoviePagination[];
 }) => {
   return (
-    <ul className="grid grid-cols-3 gap-4">
-      {movieList.map((item) => {
-        return (
-          <MovieListItem
-            onClick={() => onRoute(`/movie/${item.id}`)}
-            key={item.id}
-            title={item.title}
-            image={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-          />
-        );
+    <ul className="grid grid-cols-2 gap-4">
+      {movieList?.map(({ results }) => {
+        return results.map(({ id, title, poster_path }) => {
+          return (
+            <MovieListItem
+              onClick={() => onRoute(`/movie/${id}`)}
+              key={id}
+              title={title}
+              image={`https://image.tmdb.org/t/p/w500${poster_path}`}
+            />
+          );
+        });
       })}
     </ul>
   );
