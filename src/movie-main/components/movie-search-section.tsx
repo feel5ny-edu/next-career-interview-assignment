@@ -1,4 +1,5 @@
 import { ChangeEvent, useRef, useState } from 'react';
+import { InputWithButton } from '../../components/input-button';
 
 export const MovieSearchSection = ({
   searchKeyword,
@@ -29,29 +30,31 @@ export const MovieSearchSection = ({
   };
 
   return (
-    <section data-testid="search-section" className="px-8">
+    <section
+      data-testid="search-section"
+      className="p-8 mb-4 sticky top-0 bg-gray-200 z-50 rounded-b-xl"
+    >
       <h1 data-testid="search-title" className="text-4xl font-bold py-8">
         영화 List
       </h1>
-      <div className="flex mb-4">
-        <input
+
+      <InputWithButton>
+        <InputWithButton.Input
           ref={inputRef}
-          data-testid="search-input"
-          placeholder="영화를 검색해주세요"
           onChange={handleSearchInput}
-          className="w-full px-4 py-4 border-2 border-gray rounded-lg border-solid"
+          dataTestId="search-input"
+          placeholder="영화를 검색해주세요"
         />
-        <button
-          data-testid="search-button"
-          disabled={isDisabledButton}
+        <InputWithButton.Button
           onClick={handleSearchButton}
-          className="min-w-28 ml-2 rounded-lg px-8 py-4 bg-slate-600 disabled:bg-slate-400 text-white"
+          dataTestId="search-button"
+          disabled={isDisabledButton}
         >
           검색
-        </button>
-      </div>
+        </InputWithButton.Button>
+      </InputWithButton>
       {searchKeyword && (
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <button
             className="rounded-lg px-4 py-2 mb-4 border-slate-600 border-2"
             data-testid="init-search-button"

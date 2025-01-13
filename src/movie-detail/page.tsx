@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useGetMovie } from '../api/get-movie';
 import { useRef, useState } from 'react';
+import { InputWithButton } from '../components/input-button';
 
 const storageKey = 'movie-comment';
 
@@ -52,15 +53,19 @@ export const MovieDetail = () => {
           </button>
         )}
         {!commentRef.current?.value && showCommentInput && (
-          <div className="flex" data-testid="movie-comment-form">
-            <input data-testid="movie-comment-input" ref={commentRef} />
-            <button
-              data-testid="movie-comment-submit-button"
+          <InputWithButton data-testid="movie-comment-form">
+            <InputWithButton.Input
+              ref={commentRef}
+              dataTestId="movie-comment-input"
+              placeholder="영화를 검색해주세요"
+            />
+            <InputWithButton.Button
               onClick={handleSubmitComment}
+              dataTestId="movie-comment-submit-button"
             >
               제출
-            </button>
-          </div>
+            </InputWithButton.Button>
+          </InputWithButton>
         )}
       </div>
     </div>
