@@ -9,9 +9,10 @@ export const MovieDetail = () => {
   const { id } = useParams();
   if (!id) throw new Error('required parameter');
 
-  const commentRef = useRef<HTMLInputElement>(
-    JSON.parse(localStorage.getItem(storageKey) || '{}')[id] || null
-  );
+  const commentFromStorage = JSON.parse(
+    localStorage.getItem(storageKey) || '{}'
+  )[id];
+  const commentRef = useRef<HTMLInputElement>(null);
   const { data, isLoading } = useGetMovie({ id: Number(id) });
   const [showCommentInput, setShowCommentInput] = useState(
     Boolean(commentRef.current?.value)
@@ -46,16 +47,20 @@ export const MovieDetail = () => {
         평점 {data.vote_average}
       </div>
       <div data-testid="movie-comment">
-        <div data-testid="movie-comment-item">{commentRef.current?.value}</div>
-        {!commentRef.current?.value && !showCommentInput && (
-          <button
-            data-testid="movie-comment-button"
-            className="min-w-52 p-4 rounded-lg hover:bg-blue-100"
-            onClick={handleToggle}
-          >
-            한줄평 작성하기 +
-          </button>
-        )}
+        <div data-testid="movie-comment-item">
+          {commentRef.current?.value || commentFromStorage}
+        </div>
+        {!commentFromStorage &&
+          !commentRef.current?.value &&
+          !showCommentInput && (
+            <button
+              data-testid="movie-comment-button"
+              className="min-w-52 p-4 rounded-lg hover:bg-blue-100"
+              onClick={handleToggle}
+            >
+              한줄평 작성하기 +
+            </button>
+          )}
         {!commentRef.current?.value && showCommentInput && (
           <InputWithButton data-testid="movie-comment-form">
             <InputWithButton.Input

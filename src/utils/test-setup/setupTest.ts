@@ -4,5 +4,8 @@ import { beforeAll, afterEach, afterAll } from 'vitest';
 import { server } from '../../mocks/server';
 
 beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  localStorage.clear();
+});
 afterAll(() => server.close());
