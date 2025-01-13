@@ -40,7 +40,7 @@ export const MovieDetail = () => {
       <img
         data-testid="movie-poster"
         src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-        className="rounded-lg"
+        className="rounded-lg inline"
       />
       <div data-testid="movie-vote" className="text-xl py-4">
         평점 {data.vote_average}
@@ -48,7 +48,11 @@ export const MovieDetail = () => {
       <div data-testid="movie-comment">
         <div data-testid="movie-comment-item">{commentRef.current?.value}</div>
         {!commentRef.current?.value && !showCommentInput && (
-          <button data-testid="movie-comment-button" onClick={handleToggle}>
+          <button
+            data-testid="movie-comment-button"
+            className="min-w-52 p-4 rounded-lg hover:bg-blue-100"
+            onClick={handleToggle}
+          >
             한줄평 작성하기 +
           </button>
         )}
