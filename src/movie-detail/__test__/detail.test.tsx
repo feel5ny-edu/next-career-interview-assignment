@@ -4,10 +4,11 @@ import { renderDetail } from '../../utils/test-setup/wrapper';
 import { getUrl } from '../../mocks/handlers';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { GET_MOVIE_PATH } from '../../api/get-movie';
+import App from '../../App';
 
 const MOVIE_ID = '123';
 const renderDetailWithAsync = async () => {
-  renderDetail(MOVIE_ID);
+  const render = renderDetail(MOVIE_ID);
   const MOCK_MOVIE_TITLE = '라이온킹';
 
   server.use(
@@ -21,6 +22,25 @@ const renderDetailWithAsync = async () => {
     })
   );
   await waitFor(() => screen.getByText(MOCK_MOVIE_TITLE));
+  return render;
+};
+
+const MOCK_COMMENT = '재미있네요!';
+const submitComment = async () => {
+  // GIVEN
+  const renderResult = await renderDetailWithAsync();
+  const movieCommentButton = screen.getByTestId('movie-comment-button');
+  fireEvent.click(movieCommentButton);
+
+  const movieCommentInput = screen.getByTestId('movie-comment-input');
+  const movieCommentSubmitButton = screen.getByTestId(
+    'movie-comment-submit-button'
+  );
+
+  // WHEN
+  fireEvent.change(movieCommentInput, { target: { value: MOCK_COMMENT } });
+  fireEvent.click(movieCommentSubmitButton);
+  return renderResult;
 };
 
 describe('첫 노출', () => {
@@ -35,6 +55,14 @@ describe('첫 노출', () => {
     expect(moviePoster).toBeInTheDocument();
     expect(movieVote).toBeInTheDocument();
     expect(movieComment).toBeInTheDocument();
+  });
+
+  it('상세페이지 진입시 id에 매칭되는 한줄평을 로컬스토리지에서 조회할 수 있다.', async () => {
+    const { rerender } = await submitComment();
+
+    rerender(<App />);
+
+    expect(screen.getByText(MOCK_COMMENT)).toBeInTheDocument();
   });
 });
 
@@ -51,23 +79,6 @@ describe('한줄 평 작성', () => {
     expect(movieCommentInput).toBeInTheDocument();
     expect(movieCommentSubmitButton).toBeInTheDocument();
   });
-
-  const MOCK_COMMENT = '재미있네요!';
-  const submitComment = async () => {
-    // GIVEN
-    await renderDetailWithAsync();
-    const movieCommentButton = screen.getByTestId('movie-comment-button');
-    fireEvent.click(movieCommentButton);
-
-    const movieCommentInput = screen.getByTestId('movie-comment-input');
-    const movieCommentSubmitButton = screen.getByTestId(
-      'movie-comment-submit-button'
-    );
-
-    // WHEN
-    fireEvent.change(movieCommentInput, { target: { value: MOCK_COMMENT } });
-    fireEvent.click(movieCommentSubmitButton);
-  };
 
   it('한줄평을 작성한 후 제출버튼을 누르면 input이 비노출된다.', async () => {
     await submitComment();
