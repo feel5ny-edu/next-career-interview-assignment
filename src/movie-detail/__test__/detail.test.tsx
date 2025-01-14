@@ -26,7 +26,7 @@ const renderDetailWithAsync = async () => {
 };
 
 const MOCK_COMMENT = '재미있네요!';
-const submitComment = async () => {
+const submitComment = async (comment = MOCK_COMMENT) => {
   // GIVEN
   const renderResult = await renderDetailWithAsync();
   const movieCommentButton = screen.getByTestId('movie-comment-button');
@@ -38,7 +38,7 @@ const submitComment = async () => {
   );
 
   // WHEN
-  fireEvent.change(movieCommentInput, { target: { value: MOCK_COMMENT } });
+  fireEvent.change(movieCommentInput, { target: { value: comment } });
   fireEvent.click(movieCommentSubmitButton);
   return renderResult;
 };
@@ -103,5 +103,16 @@ describe('한줄 평 작성', () => {
      * { [movie-id]: string }
      */
     expect(storedData).toEqual({ 123: MOCK_COMMENT });
+  });
+  it('한줄평을 작성한 후 제출버튼을 누르면, 한줄평 앞뒤 trim처리가 된다.', async () => {
+    const MOCK_COMMENT = ' 재미 없어요..';
+    const EXPECT_COMMENT = '재미 없어요..';
+    await submitComment(MOCK_COMMENT);
+
+    const storedData = JSON.parse(
+      localStorage.getItem('movie-comment') || '{}'
+    );
+
+    expect(storedData).toEqual({ 123: EXPECT_COMMENT });
   });
 });
