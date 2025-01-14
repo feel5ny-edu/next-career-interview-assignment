@@ -6,6 +6,7 @@ type ImageLoaderProps = {
   skeletonHeight?: string;
   skeletonWidth?: string;
   className?: string;
+  fallbackSrc?: string;
 };
 
 export const SkeletonImageLoader = ({
@@ -14,12 +15,20 @@ export const SkeletonImageLoader = ({
   skeletonHeight = '400px',
   skeletonWidth = '100%',
   className,
+  fallbackSrc = 'https://dummyimage.com/300x200/cccccc/000000&text=image+load+error',
 }: ImageLoaderProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleImageLoad = () => {
     setIsLoaded(true);
   };
+
+  const handleImageError = () => {
+    setHasError(true);
+  };
+
+  const currentSrc = hasError ? fallbackSrc : src;
 
   return (
     <div
@@ -37,9 +46,10 @@ export const SkeletonImageLoader = ({
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         data-testid="movie-poster"
-        src={src}
+        src={currentSrc}
         alt={alt}
         onLoad={handleImageLoad}
+        onError={handleImageError}
       />
     </div>
   );
