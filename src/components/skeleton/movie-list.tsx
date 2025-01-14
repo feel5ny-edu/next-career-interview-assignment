@@ -1,6 +1,9 @@
 export const MovieListSkeleton = () => {
   return (
-    <section className="px-8 py-4 bg-slate-100 rounded-3xl">
+    <section
+      className="px-8 py-4 bg-slate-100 rounded-3xl"
+      data-testid="loader"
+    >
       <div className="animate-pulse">
         <div className="h-12 bg-slate-200 rounded-full w-96 mb-4"></div>
 

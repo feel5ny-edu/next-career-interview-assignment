@@ -45,7 +45,7 @@ export const useSearchMovieInfinite = ({
   >({
     queryKey: ['get-search-movie-infinite', query],
     queryFn: ({ pageParam }: { pageParam: number }) =>
-      getSearchMovie({ query: query, page: pageParam }),
+      getSearchMovie({ query: query.trim(), page: pageParam }),
     getNextPageParam: (lastPage, pages) => {
       const { total_results, page } = pages[pages.length - 1];
       if (total_results === 0) return null;
