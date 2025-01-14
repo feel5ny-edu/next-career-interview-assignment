@@ -7,8 +7,14 @@ export const NowPlayingMovieList = () => {
   const navigate = useNavigate();
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
-  const { data, isFetched, fetchNextPage, hasNextPage, isFetching } =
-    useGetListNowPlayingMovieInfinite();
+  const {
+    data,
+    isFetched,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useGetListNowPlayingMovieInfinite();
 
   useEffect(() => {
     if (!hasNextPage || isFetching) return;
@@ -46,6 +52,7 @@ export const NowPlayingMovieList = () => {
           margin: '1rem 0',
         }}
       />
+      {isFetchingNextPage && <div>isFetching...</div>}
     </section>
   );
 };

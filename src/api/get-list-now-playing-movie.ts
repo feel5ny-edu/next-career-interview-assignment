@@ -1,6 +1,6 @@
 import {
   InfiniteData,
-  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
   useQuery,
   UseQueryOptions,
   UseQueryResult,
@@ -38,7 +38,7 @@ export const useGetListNowPlayingMovie = (
 
 const PAGE_SIZE = 20;
 export const useGetListNowPlayingMovieInfinite = () => {
-  return useInfiniteQuery<
+  return useSuspenseInfiniteQuery<
     ResponseGetListNowPlayingMovie,
     Error,
     InfiniteData<ResponseGetListNowPlayingMovie>,

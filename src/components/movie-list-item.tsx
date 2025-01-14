@@ -1,4 +1,5 @@
 import { MoviePagination } from '../api/types/movie';
+import { SkeletonImageLoader } from './skeleton/image';
 
 export const MovieList = ({
   onRoute,
@@ -41,7 +42,7 @@ export const MovieListItem = ({
       className="hover:shadow-xl cursor-pointer p-4 rounded-xl bg-white"
     >
       <figure>
-        <img src={image} className="rounded-lg" />
+        <SkeletonImageLoader src={image} className="rounded-lg" alt={title} />
         <figcaption className="pt-4">
           <p>{title}</p>
         </figcaption>

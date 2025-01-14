@@ -1,6 +1,6 @@
 import {
   InfiniteData,
-  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
   useQuery,
   UseQueryOptions,
 } from '@tanstack/react-query';
@@ -36,7 +36,7 @@ const PAGE_SIZE = 20;
 export const useSearchMovieInfinite = ({
   query,
 }: Pick<RequestGetSearchMovie, 'query'>) => {
-  return useInfiniteQuery<
+  return useSuspenseInfiniteQuery<
     ResponseGetSearchMovie,
     Error,
     InfiniteData<ResponseGetSearchMovie>,
@@ -53,6 +53,5 @@ export const useSearchMovieInfinite = ({
       return page + 1;
     },
     initialPageParam: 1,
-    enabled: !!query,
   });
 };

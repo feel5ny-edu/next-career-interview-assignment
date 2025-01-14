@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useGetMovie } from '../api/get-movie';
 import { CommentSection } from './components/comment-section';
+import { SkeletonImageLoader } from '../components/skeleton/image';
 
 export const MovieDetail = () => {
   const { id } = useParams();
@@ -16,10 +17,11 @@ export const MovieDetail = () => {
       <h1 data-testid="movie-title" className="text-4xl p-8">
         {data.title}
       </h1>
-      <img
-        data-testid="movie-poster"
+      <SkeletonImageLoader
         src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-        className="rounded-lg inline"
+        className="rounded-lg"
+        skeletonHeight="700px"
+        alt={data.title}
       />
       <div data-testid="movie-vote" className="text-xl py-4">
         평점 {data.vote_average}

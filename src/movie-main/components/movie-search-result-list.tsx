@@ -12,8 +12,14 @@ export const MovieSearchResultList = ({
   const lastItemRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  const { hasNextPage, isFetching, fetchNextPage, data } =
-    useSearchMovieInfinite({ query: searchKeyword });
+  const {
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isFetching,
+    fetchNextPage,
+    data,
+  } = useSearchMovieInfinite({ query: searchKeyword });
 
   useEffect(() => {
     if (!hasNextPage || isFetching) return;
@@ -37,7 +43,7 @@ export const MovieSearchResultList = ({
   }, [fetchNextPage, hasNextPage, isFetching]);
 
   if (!data) return null;
-
+  if (isLoading) return <>isLoading</>;
   return (
     <section
       data-testid="movie-search-result"
@@ -54,6 +60,7 @@ export const MovieSearchResultList = ({
           margin: '1rem 0',
         }}
       />
+      {isFetchingNextPage && <div>isFetching...</div>}
     </section>
   );
 };
