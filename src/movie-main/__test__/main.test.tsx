@@ -124,6 +124,45 @@ describe('영화 검색', () => {
     expect(mockHandler).toHaveBeenCalled();
   });
 
+  it('검색어를 입력 후 검색버튼을 누르면, 검색어의 앞뒤 trim처리가 되어 검색된다.', async () => {
+    const getSearchParams = async (query: string) => {
+      let searchParams = null;
+
+      server.use(
+        http.get(getUrl(GET_SEARCH_MOVIE_PATH), async ({ request }) => {
+          // 요청한 query parameter 갖고오기
+          searchParams = new URLSearchParams(
+            new URL(request.url).searchParams
+          ).get('query');
+        })
+      );
+
+      fireEvent.change(searchInput, { target: { value: query } });
+      fireEvent.click(searchButton);
+
+      await waitFor(() => screen.getByTestId('loader'));
+
+      return searchParams;
+    };
+
+    // GIVEN
+    renderMain();
+
+    // WHEN
+    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId('search-button');
+
+    const MOCK_QUERY_1 = ' 반지의 제왕';
+    const MOCK_QUERY_2 = '반지의 제왕 ';
+    const MOCK_QUERY_3 = ' 반지의 제왕 ';
+    const MOCK_TITLE = '반지의 제왕';
+
+    // THEN
+    expect(await getSearchParams(MOCK_QUERY_1)).toBe(MOCK_TITLE);
+    expect(await getSearchParams(MOCK_QUERY_2)).toBe(MOCK_TITLE);
+    expect(await getSearchParams(MOCK_QUERY_3)).toBe(MOCK_TITLE);
+  });
+
   it('영화가 검색되면 검색된 영화의 갯수가 노출된다.', async () => {
     await searchMovie();
 
