@@ -55,5 +55,6 @@ export const useGetListNowPlayingMovieInfinite = () => {
       return page + 1;
     },
     initialPageParam: 1,
+    staleTime: Infinity,
   });
 };
