@@ -1,6 +1,10 @@
 import { screen } from '@testing-library/react';
 import { renderMain } from '../../utils/test-setup/wrapper';
 import { renderMainWithAsync } from './utils/given-when';
+import { server } from '../../mocks/server';
+import { http, HttpResponse } from 'msw';
+import { getUrl } from '../../mocks/handlers';
+import { GET_LIST_NOW_PLAYING_MOVIE_PATH } from '../../api/get-list-now-playing-movie';
 
 describe('첫 노출', () => {
   it('메인페이지 진입시, 검색 섹션이 노출되어있다.', () => {
@@ -32,5 +36,17 @@ describe('첫 노출', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       '현재 상영중인 영화'
     );
+  });
+
+  it('메인페이지 진입시, 목록조회 중 에러가 발생하면 에러 화면을 확인할 수 있다.', async () => {
+    renderMain();
+
+    server.use(
+      http.get(getUrl(GET_LIST_NOW_PLAYING_MOVIE_PATH), async () => {
+        return HttpResponse.error();
+      })
+    );
+
+    expect(screen.getByText('에러가 발생했습니다.')).toBeInTheDocument();
   });
 });
