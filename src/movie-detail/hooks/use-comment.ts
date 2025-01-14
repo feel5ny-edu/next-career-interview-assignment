@@ -12,7 +12,7 @@ export const useComment = ({ id }: { id: string }) => {
   const [comment, setComment] = useState(() => getValue()[id]);
 
   const handleSubmitComment = () => {
-    const newComment = commentInputRef.current?.value || '';
+    const newComment = commentInputRef.current?.value.trim() || '';
     setComment(newComment);
 
     setValue({ ...getValue(), [id]: newComment });
