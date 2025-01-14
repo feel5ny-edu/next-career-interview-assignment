@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { LocationDisplay } from './location-display';
 import App from '../../App';
+import { SuspenseWithErrorHandling } from '../../components/suspense-with-error-boundary';
 
 export const Wrapper = ({
   children,
@@ -11,9 +12,13 @@ export const Wrapper = ({
 }: PropsWithChildren<{
   initialEntry?: string;
 }>) => (
-  <QueryClientProvider client={new QueryClient()}>
-    <MemoryRouter initialEntries={[initialEntry]}>{children}</MemoryRouter>
-  </QueryClientProvider>
+  <MemoryRouter initialEntries={[initialEntry]}>
+    <QueryClientProvider client={new QueryClient()}>
+      <SuspenseWithErrorHandling loader={<div>Loading...</div>}>
+        {children}
+      </SuspenseWithErrorHandling>
+    </QueryClientProvider>
+  </MemoryRouter>
 );
 
 export const renderMain = () => {

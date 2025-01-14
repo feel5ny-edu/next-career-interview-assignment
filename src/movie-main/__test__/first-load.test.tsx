@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { renderMain } from '../../utils/test-setup/wrapper';
 import { renderMainWithAsync } from './utils/given-when';
 import { server } from '../../mocks/server';
@@ -47,6 +47,8 @@ describe('첫 노출', () => {
       })
     );
 
-    expect(screen.getByText('에러가 발생했습니다.')).toBeInTheDocument();
+    await waitFor(() => screen.getByTestId('loader'));
+    const errorFallback = await screen.findByTestId('error-fallback');
+    expect(errorFallback).toBeInTheDocument();
   });
 });
