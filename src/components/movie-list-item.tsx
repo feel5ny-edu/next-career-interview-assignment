@@ -1,3 +1,4 @@
+import { getImageUrl } from '../api/image-url';
 import { MoviePagination } from '../api/types/movie';
 import { SkeletonImageLoader } from './skeleton/image';
 
@@ -17,7 +18,7 @@ export const MovieList = ({
               onClick={() => onRoute(`/movie/${id}`)}
               key={id}
               title={title}
-              image={`https://image.tmdb.org/t/p/w500${poster_path}`}
+              image={getImageUrl(poster_path)}
             />
           );
         });
