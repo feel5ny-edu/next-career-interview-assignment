@@ -37,6 +37,7 @@ export const CommentSection = () => {
         ref={commentInputRef}
         dataTestId="movie-comment-input"
         placeholder="영화를 검색해주세요"
+        onKeyDownEnter={handleSubmitComment}
       />
       <InputWithButton.Button
         onClick={handleSubmitComment}

@@ -44,6 +44,7 @@ export const MovieSearchSection = ({
         <InputWithButton.Input
           ref={inputRef}
           onChange={handleSearchInput}
+          onKeyDownEnter={handleSearchButton}
           dataTestId="search-input"
           placeholder="영화를 검색해주세요"
         />

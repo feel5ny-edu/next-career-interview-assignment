@@ -9,6 +9,7 @@ interface InputWithButtonProps {
 interface InputProps {
   placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDownEnter?: () => void;
   className?: string;
   dataTestId?: string;
 }
@@ -35,7 +36,13 @@ export const InputWithButton = ({
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { placeholder = 'Type here...', onChange, className = '', dataTestId },
+    {
+      placeholder = 'Type here...',
+      onChange,
+      onKeyDownEnter,
+      className = '',
+      dataTestId,
+    },
     ref
   ) => {
     return (
@@ -43,6 +50,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         placeholder={placeholder}
         onChange={onChange}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') onKeyDownEnter?.();
+        }}
         className={`flex-1 rounded-lg border p-4 ${className}`}
         data-testid={dataTestId}
       />
